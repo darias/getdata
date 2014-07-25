@@ -44,7 +44,3 @@ The run_analysis R script does the follwing things:
 * Merge the activity_labels.txt data into the data frame.
 
 * Take the averages of all the mean and standard deviation columns aggregated over subject and activity.
-
-The test data directory was unzipped into the project directory. The R code assumes the existence of the data directory.
-
-The mean and standard deviation fields to be extracted were identified from the features.txt file by looking for "mean" or "std" in the name.

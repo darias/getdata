@@ -52,37 +52,6 @@ get_columns <- function() {
 }
 
 
-run_analysis <- function() {
-
-	### 1. Merge the training and test sets
-
-	df <- load_data()
-
-	### 2. Extract mean and std measurements
-	### 4. Appropriately label the data
-
-	cols <- get_columns()
-
-	# Add the subject column
-	cols <- rbind(cols, data.frame(V1=562, V2='', colName='subject'))
-	# Add the activity column
-	cols <- rbind(cols, data.frame(V1=563, V2='', colName='activity'))
-
-	# Extract the desired columns from the original data by column number
-	df <- df[, cols$V1]
-	# Assign the new column names
-	names(df) <- cols$colName
-
-	### 3. Use descriptive activity names
-
-	# Merge the activity labels
-	activity_labels <- read.table("UCI HAR Dataset/activity_labels.txt", quote="\"")
-	names(activity_labels) <- c("activity", "activity_label")
-	df <- merge(df, activity_labels, by="activity")
-
-	return(df)
-}
-
 averages <- function(df) {
 	# df is a data frame created by run_analysis()
 
@@ -134,4 +103,37 @@ averages <- function(df) {
 		) ~ subject+activity_label, df, mean)
 
 	return(avg)
+}
+
+run_analysis <- function() {
+
+	### 1. Merge the training and test sets
+
+	df <- load_data()
+
+	### 2. Extract mean and std measurements
+	### 4. Appropriately label the data
+
+	cols <- get_columns()
+
+	# Add the subject column
+	cols <- rbind(cols, data.frame(V1=562, V2='', colName='subject'))
+	# Add the activity column
+	cols <- rbind(cols, data.frame(V1=563, V2='', colName='activity'))
+
+	# Extract the desired columns from the original data by column number
+	df <- df[, cols$V1]
+	# Assign the new column names
+	names(df) <- cols$colName
+
+	### 3. Use descriptive activity names
+
+	# Merge the activity labels into the data
+	activity_labels <- read.table("UCI HAR Dataset/activity_labels.txt", quote="\"")
+	names(activity_labels) <- c("activity", "activity_label")
+	df <- merge(df, activity_labels, by="activity")
+
+	### 5. Generate the tidy dataset
+
+	return(averages(df))
 }
